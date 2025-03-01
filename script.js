@@ -111,6 +111,12 @@ function startSorting() {
     sortingInProgress = true;
     stopSorting = false;
     resetStats();
+    
+    // Reset all array bars to their default state
+    arrayBars.forEach(bar => {
+        bar.className = 'array-bar';
+    });
+    
     startTimer();
     
     statusElement.textContent = 'Sorting...';
