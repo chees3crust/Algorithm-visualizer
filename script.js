@@ -9,6 +9,10 @@ let startTime = 0;
 let timerInterval = null;
 let arrayAccesses = 0;
 let efficiency = 'N/A';
+let audioContext = null;
+let oscillator = null;
+let gainNode = null;
+let audioEnabled = false;
 
 // DOM elements
 const arrayContainer = document.getElementById('array-container');
@@ -154,6 +158,9 @@ function stopSortingProcess() {
     sizeSlider.disabled = false;
     statusElement.textContent = 'Stopped';
     
+    // Stop any playing sound
+    stopSound();
+    
     // Reset the array bars to remove any coloring
     arrayBars.forEach(bar => {
         bar.className = 'array-bar';
@@ -205,6 +212,9 @@ function finishSorting() {
     // Calculate final efficiency
     updateEfficiency();
     
+    // Play completion sound
+    playCompletionSound();
+    
     // Mark all bars as sorted
     arrayBars.forEach(bar => {
         bar.className = 'array-bar sorted';
@@ -240,8 +250,11 @@ async function highlightComparing(i, j) {
     arrayBars[i].classList.add('comparing');
     arrayBars[j].classList.add('comparing');
     
+    // Play sound based on the values being compared
+    playSortingSound(array[i], array[j]);
+    
     updateComparisons();
-    updateArrayAccess(); // Track array access
+    updateArrayAccess();
     
     await sleep(getDelay());
     
@@ -267,14 +280,31 @@ function updateBar(index, value) {
 
 // Swap two elements in the array
 async function swap(i, j) {
-    await highlightSwapping(i, j);
+    if (i >= arrayBars.length || j >= arrayBars.length) return;
     
+    // Swap array values
     const temp = array[i];
     array[i] = array[j];
     array[j] = temp;
     
-    arrayBars[i].style.height = `${array[i] * 3}px`;
-    arrayBars[j].style.height = `${array[j] * 3}px`;
+    // Update visualization
+    arrayBars[i].style.height = `${array[i] * 3.5}px`;
+    arrayBars[j].style.height = `${array[j] * 3.5}px`;
+    
+    // Add swapping class for animation
+    arrayBars[i].classList.add('swapping');
+    arrayBars[j].classList.add('swapping');
+    
+    // Play sound based on the values being swapped
+    playSortingSound(array[i], array[j]);
+    
+    updateSwaps();
+    
+    await sleep(getDelay());
+    
+    // Remove swapping class
+    arrayBars[i].classList.remove('swapping');
+    arrayBars[j].classList.remove('swapping');
 }
 
 // Bubble Sort Algorithm
@@ -682,6 +712,121 @@ function changeColorTheme() {
 
 // Toggle sound effects
 function toggleSoundEffects() {
-    // Implementation for sound effects
-    console.log('Sound effects:', soundToggle.checked ? 'ON' : 'OFF');
+    audioEnabled = soundToggle.checked;
+    
+    if (audioEnabled && !audioContext) {
+        // Initialize Web Audio API
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            console.log('Audio context initialized');
+        } catch (e) {
+            console.error('Web Audio API not supported:', e);
+            audioEnabled = false;
+            soundToggle.checked = false;
+        }
+    }
+    
+    // Stop any playing sounds if disabled
+    if (!audioEnabled && oscillator) {
+        stopSound();
+    }
+    
+    console.log('Sound effects:', audioEnabled ? 'ON' : 'OFF');
+}
+
+// Function to play sorting sound
+function playSortingSound(value1, value2) {
+    if (!audioEnabled || !audioContext) return;
+    
+    // Stop previous sound if playing
+    if (oscillator) {
+        stopSound();
+    }
+    
+    // Create oscillator and gain node
+    oscillator = audioContext.createOscillator();
+    gainNode = audioContext.createGain();
+    
+    // Connect nodes
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    // Set oscillator type to square wave for 8-bit sound
+    oscillator.type = 'square';
+    
+    // Calculate frequency based on array values (higher values = higher pitch)
+    // Map array values (1-100) to frequency range (200-800 Hz)
+    const avgValue = (value1 + value2) / 2;
+    const frequency = 200 + (avgValue * 6);
+    oscillator.frequency.value = frequency;
+    
+    // Set volume based on speed (faster = louder)
+    const speed = parseInt(speedSlider.value);
+    const volume = 0.1 + (speed / 200); // 0.1 to 0.6
+    gainNode.gain.value = volume;
+    
+    // Start oscillator
+    oscillator.start();
+    
+    // Stop sound after a short duration
+    setTimeout(() => {
+        if (oscillator) {
+            stopSound();
+        }
+    }, getDelay() / 2);
+}
+
+// Function to stop sound
+function stopSound() {
+    if (oscillator) {
+        oscillator.stop();
+        oscillator.disconnect();
+        oscillator = null;
+    }
+    
+    if (gainNode) {
+        gainNode.disconnect();
+        gainNode = null;
+    }
+}
+
+// Play completion sound
+function playCompletionSound() {
+    if (!audioEnabled || !audioContext) return;
+    
+    // Stop any ongoing sound
+    if (oscillator) {
+        stopSound();
+    }
+    
+    // Create success sound (ascending arpeggio)
+    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+    const duration = 100;
+    
+    notes.forEach((note, index) => {
+        setTimeout(() => {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.type = 'square';
+            osc.frequency.value = note;
+            
+            gain.gain.value = 0.2;
+            
+            osc.start();
+            
+            // Fade out
+            gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
+            
+            // Stop after fade
+            setTimeout(() => {
+                osc.stop();
+                osc.disconnect();
+                gain.disconnect();
+            }, 300);
+        }, index * duration);
+    });
 } 

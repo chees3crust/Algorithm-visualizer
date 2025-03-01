@@ -14,7 +14,7 @@
     <!-- Add loading overlay -->
     <div class="loading-overlay">
       <div class="loading-content">
-        <div class="nerv-triangle"></div>
+        <div class="sav-logo"></div>
         <div
           class="loading-text glitch-text"
           data-text="INITIALIZING MAGI SYSTEM"
@@ -31,8 +31,8 @@
     <div class="container">
       <header>
         <div class="logo">
-          <div class="nerv-triangle"></div>
-          <div class="nerv-text glitch-text" data-text="NERV">NERV</div>
+          <div class="sav-logo"></div>
+          <div class="nerv-text glitch-text" data-text="SAV">SAV</div>
         </div>
         <div
           class="system-status glitch-text"
@@ -118,10 +118,10 @@
                 >COLOR THEME:</label
               >
               <select id="color-theme">
-                <option value="nerv">NERV DEFAULT</option>
-                <option value="seele">SEELE MONOLITH</option>
-                <option value="eva01">EVA-01</option>
-                <option value="eva02">EVA-02</option>
+                <option value="nerv">SAV DEFAULT</option>
+                <option value="seele">QUANTUM BLUE</option>
+                <option value="eva01">MATRIX GREEN</option>
+                <option value="eva02">CRIMSON ALERT</option>
               </select>
             </div>
             <div class="control-group">
@@ -181,7 +181,7 @@
 
       <footer>
         <div class="terminal-prompt">
-          <span class="nerv-prompt">NERV></span>
+          <span class="nerv-prompt">SAV></span>
           <span
             class="command glitch-text"
             data-text="EXECUTE SORTING ALGORITHM"
@@ -193,5 +193,13 @@
     </div>
 
     <script src="script.js"></script>
+
+    <!-- Add these audio elements before the closing body tag -->
+    <audio id="sort-audio" preload="auto"></audio>
+    <audio
+      id="complete-audio"
+      preload="auto"
+      src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA=="
+    ></audio>
   </body>
 </html>

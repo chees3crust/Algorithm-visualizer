@@ -49,12 +49,34 @@ header {
     gap: 10px;
 }
 
-.nerv-triangle {
-    width: 0;
-    height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-bottom: 25px solid var(--primary);
+.sav-logo {
+    position: relative;
+    width: 22px;
+    height: 22px;
+    background-color: var(--primary);
+    transform: rotate(45deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--primary);
+}
+
+.sav-logo::before {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background-color: var(--background);
+    border-radius: 50%;
+}
+
+.sav-logo::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: var(--secondary);
+    border-radius: 50%;
 }
 
 .nerv-text {
@@ -292,6 +314,7 @@ footer {
 .nerv-prompt {
     color: var(--primary);
     font-weight: bold;
+    margin-right: 10px;
 }
 
 .command {
@@ -527,11 +550,20 @@ footer {
 }
 
 /* Make the loading NERV triangle larger */
-.loading-overlay .nerv-triangle {
-    border-left: 25px solid transparent;
-    border-right: 25px solid transparent;
-    border-bottom: 40px solid var(--primary);
+.loading-overlay .sav-logo {
+    width: 40px;
+    height: 40px;
     margin-bottom: 20px;
+}
+
+.loading-overlay .sav-logo::before {
+    width: 26px;
+    height: 26px;
+}
+
+.loading-overlay .sav-logo::after {
+    width: 12px;
+    height: 12px;
 }
 
 /* Hide the loading overlay after animation */
@@ -647,4 +679,9 @@ input:checked + .toggle-label:before {
 
 .toggle-label:before {
     border-radius: 50%;
+}
+
+/* Add sound indicator styles */
+.toggle-label.sound-active:before {
+    box-shadow: 0 0 5px var(--secondary), 0 0 10px var(--secondary);
 } 
