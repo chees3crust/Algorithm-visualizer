@@ -1,0 +1,650 @@
+:root {
+    --primary: #ff4500;
+    --secondary: #00ffff;
+    --background: #000000;
+    --panel: #111111;
+    --text: #ffffff;
+    --accent: #ff8c00;
+    --grid: #333333;
+    --warning: #ff4500;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto Mono', monospace;
+    background-color: var(--background);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    border: 1px solid var(--grid);
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--grid);
+    padding-bottom: 10px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nerv-triangle {
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 25px solid var(--primary);
+}
+
+.nerv-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary);
+    letter-spacing: 2px;
+}
+
+.system-status {
+    font-size: 1rem;
+    color: var(--secondary);
+    letter-spacing: 1px;
+}
+
+.timer {
+    font-size: 1rem;
+    color: var(--text);
+    letter-spacing: 1px;
+}
+
+/* Main Grid Layout */
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas:
+        "controls visualization";
+    gap: 10px;
+    flex-grow: 1;
+}
+
+/* Controls Section */
+.controls-section {
+    grid-area: controls;
+    background-color: var(--panel);
+    border-radius: 0;
+    padding: 15px;
+    border: 1px solid var(--grid);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.section-title {
+    font-size: 1rem;
+    color: var(--primary);
+    letter-spacing: 2px;
+    border-bottom: 1px solid var(--primary);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.control-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+label {
+    font-size: 0.8rem;
+    color: var(--text);
+    letter-spacing: 1px;
+}
+
+select, input[type="range"] {
+    background-color: var(--background);
+    color: var(--text);
+    border: 1px solid var(--grid);
+    padding: 5px;
+    border-radius: 0;
+    width: 100%;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+button {
+    background-color: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--grid);
+    padding: 5px 10px;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.8rem;
+    flex: 1;
+}
+
+button:hover {
+    background-color: var(--grid);
+}
+
+button.primary {
+    background-color: var(--primary);
+    color: var(--text);
+    border: none;
+}
+
+button.primary:hover {
+    background-color: #cc3300;
+}
+
+#stop {
+    background-color: var(--accent);
+    color: var(--background);
+    border: none;
+}
+
+#stop:hover {
+    background-color: #cc7000;
+}
+
+/* Status Panel */
+.status-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.status-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-size: 0.7rem;
+    color: var(--text);
+}
+
+.value {
+    font-size: 0.8rem;
+    color: var(--secondary);
+}
+
+/* Visualization Section */
+.visualization-section {
+    grid-area: visualization;
+    background-color: var(--panel);
+    border-radius: 0;
+    padding: 20px;
+    border: 1px solid var(--grid);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.visualization-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    background-image: 
+        linear-gradient(0deg, transparent 24%, 
+                       var(--grid) 25%, 
+                       var(--grid) 26%, 
+                       transparent 27%, 
+                       transparent 74%, 
+                       var(--grid) 75%, 
+                       var(--grid) 76%, 
+                       transparent 77%, 
+                       transparent),
+        linear-gradient(90deg, transparent 24%, 
+                       var(--grid) 25%, 
+                       var(--grid) 26%, 
+                       transparent 27%, 
+                       transparent 74%, 
+                       var(--grid) 75%, 
+                       var(--grid) 76%, 
+                       transparent 77%, 
+                       transparent);
+    background-size: 30px 30px;
+    opacity: 0.2;
+    z-index: 0;
+}
+
+.array-container {
+    height: 350px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 1px;
+    position: relative;
+    z-index: 1;
+    margin-top: 20px;
+}
+
+.array-bar {
+    background-color: var(--secondary);
+    width: 8px;
+    transition: height 0.1s ease;
+}
+
+.array-bar.comparing {
+    background-color: var(--accent);
+}
+
+.array-bar.swapping {
+    background-color: var(--primary);
+}
+
+.array-bar.sorted {
+    background-color: #00ff00;
+}
+
+/* Footer */
+footer {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--grid);
+}
+
+.terminal-prompt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+.nerv-prompt {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.command {
+    color: var(--secondary);
+}
+
+.cursor {
+    width: 8px;
+    height: 16px;
+    background-color: var(--secondary);
+    animation: blink 1s infinite;
+    margin-left: 5px;
+}
+
+@keyframes blink {
+    0%, 49% {
+        opacity: 1;
+    }
+    50%, 100% {
+        opacity: 0;
+    }
+}
+
+/* Glitch Text Effect */
+.glitch-text {
+    position: relative;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+}
+
+.glitch-text::before {
+    color: var(--primary);
+    z-index: -1;
+    animation: glitch-animation 3s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+    color: var(--secondary);
+    z-index: -2;
+    animation: glitch-animation 2s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-animation {
+    0% {
+        transform: translateX(0);
+        clip-path: inset(0 0 0 0);
+    }
+    10% {
+        transform: translateX(-2px);
+        clip-path: inset(10% 0 80% 0);
+    }
+    20% {
+        transform: translateX(2px);
+        clip-path: inset(30% 0 50% 0);
+    }
+    30% {
+        transform: translateX(-1px);
+        clip-path: inset(50% 0 30% 0);
+    }
+    40% {
+        transform: translateX(1px);
+        clip-path: inset(70% 0 10% 0);
+    }
+    50% {
+        transform: translateX(0);
+        clip-path: inset(10% 0 90% 0);
+    }
+    60% {
+        transform: translateX(-1px);
+        clip-path: inset(40% 0 40% 0);
+    }
+    70% {
+        transform: translateX(1px);
+        clip-path: inset(80% 0 5% 0);
+    }
+    80% {
+        transform: translateX(-2px);
+        clip-path: inset(20% 0 60% 0);
+    }
+    90% {
+        transform: translateX(2px);
+        clip-path: inset(60% 0 20% 0);
+    }
+    100% {
+        transform: translateX(0);
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "controls"
+            "visualization";
+    }
+    
+    .array-bar {
+        width: 4px;
+    }
+    
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .timer {
+        align-self: flex-end;
+    }
+}
+
+/* Add this to your CSS file for more intense glitch when active */
+.active-glitch::before {
+    animation: glitch-animation 0.3s infinite linear alternate-reverse;
+    opacity: 1;
+    transform: translateX(-3px);
+}
+
+.active-glitch::after {
+    animation: glitch-animation 0.2s infinite linear alternate-reverse;
+    opacity: 1;
+    transform: translateX(3px);
+}
+
+/* Loading Animation */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 80%;
+    max-width: 500px;
+}
+
+.loading-text {
+    color: var(--primary);
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+}
+
+.loading-progress {
+    width: 100%;
+    height: 4px;
+    background-color: var(--panel);
+    position: relative;
+    overflow: hidden;
+}
+
+.loading-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background-color: var(--secondary);
+    animation: loading-progress 3s ease-in-out forwards;
+}
+
+.loading-status {
+    color: var(--secondary);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
+@keyframes loading-progress {
+    0% {
+        width: 0%;
+    }
+    50% {
+        width: 70%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+/* Add a grid background to the loading overlay */
+.loading-overlay::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(0deg, transparent 24%, 
+                       var(--grid) 25%, 
+                       var(--grid) 26%, 
+                       transparent 27%, 
+                       transparent 74%, 
+                       var(--grid) 75%, 
+                       var(--grid) 76%, 
+                       transparent 77%, 
+                       transparent),
+        linear-gradient(90deg, transparent 24%, 
+                       var(--grid) 25%, 
+                       var(--grid) 26%, 
+                       transparent 27%, 
+                       transparent 74%, 
+                       var(--grid) 75%, 
+                       var(--grid) 76%, 
+                       transparent 77%, 
+                       transparent);
+    background-size: 30px 30px;
+    opacity: 0.1;
+    z-index: -1;
+}
+
+/* Make the loading NERV triangle larger */
+.loading-overlay .nerv-triangle {
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 40px solid var(--primary);
+    margin-bottom: 20px;
+}
+
+/* Hide the loading overlay after animation */
+.loading-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Visualization Metrics */
+.visualization-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.metric-item {
+    background-color: var(--panel);
+    padding: 5px;
+    border: 1px solid var(--grid);
+    display: flex;
+    flex-direction: column;
+}
+
+.metric-label {
+    font-size: 0.7rem;
+    color: var(--secondary);
+}
+
+.metric-value {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--text);
+}
+
+/* Algorithm Info Panel */
+.algorithm-info {
+    margin-top: 15px;
+    background-color: var(--panel);
+    border: 1px solid var(--grid);
+    padding: 10px;
+}
+
+.info-header {
+    font-size: 0.9rem;
+    color: var(--primary);
+    border-bottom: 1px solid var(--primary);
+    padding-bottom: 5px;
+    margin-bottom: 8px;
+}
+
+.info-content {
+    font-size: 0.8rem;
+    color: var(--text);
+    line-height: 1.4;
+}
+
+/* Advanced Options */
+.advanced-options {
+    margin-top: 15px;
+    border-top: 1px solid var(--grid);
+    padding-top: 15px;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    width: 60px;
+    height: 30px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-label {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--background);
+    border: 1px solid var(--grid);
+    transition: .4s;
+}
+
+.toggle-label:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 3px;
+    background-color: var(--grid);
+    transition: .4s;
+}
+
+input:checked + .toggle-label {
+    background-color: var(--panel);
+}
+
+input:checked + .toggle-label:before {
+    background-color: var(--secondary);
+    transform: translateX(26px);
+}
+
+.toggle-label {
+    border-radius: 30px;
+}
+
+.toggle-label:before {
+    border-radius: 50%;
+} 

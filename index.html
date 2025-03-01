@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NERV Sorting Algorithm Visualizer</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Add loading overlay -->
+    <div class="loading-overlay">
+      <div class="loading-content">
+        <div class="nerv-triangle"></div>
+        <div
+          class="loading-text glitch-text"
+          data-text="INITIALIZING MAGI SYSTEM"
+        >
+          INITIALIZING MAGI SYSTEM
+        </div>
+        <div class="loading-progress">
+          <div class="loading-bar"></div>
+        </div>
+        <div class="loading-status">LOADING TACTICAL OPERATIONS...</div>
+      </div>
+    </div>
+
+    <div class="container">
+      <header>
+        <div class="logo">
+          <div class="nerv-triangle"></div>
+          <div class="nerv-text glitch-text" data-text="NERV">NERV</div>
+        </div>
+        <div
+          class="system-status glitch-text"
+          data-text="SYSTEM STATUS: NORMAL"
+        >
+          SYSTEM STATUS: NORMAL
+        </div>
+        <div class="timer">T-MINUS 24:15:19</div>
+      </header>
+
+      <div class="main-grid">
+        <!-- Controls Section -->
+        <div class="controls-section">
+          <div class="section-title glitch-text" data-text="CONFIGURATION">
+            CONFIGURATION
+          </div>
+
+          <div class="control-panel">
+            <div class="control-group">
+              <label for="algorithm" class="glitch-text" data-text="ALGORITHM:"
+                >ALGORITHM:</label
+              >
+              <select id="algorithm">
+                <option value="bubble">BUBBLE SORT</option>
+                <option value="selection">SELECTION SORT</option>
+                <option value="insertion">INSERTION SORT</option>
+                <option value="quick">QUICK SORT</option>
+                <option value="merge">MERGE SORT</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="size" class="glitch-text" data-text="ARRAY SIZE:"
+                >ARRAY SIZE:</label
+              >
+              <input type="range" id="size" min="5" max="100" value="50" />
+            </div>
+
+            <div class="control-group">
+              <label for="speed" class="glitch-text" data-text="SPEED:"
+                >SPEED:</label
+              >
+              <input type="range" id="speed" min="1" max="100" value="50" />
+            </div>
+
+            <div class="button-group">
+              <button id="generate">GENERATE</button>
+              <button id="sort" class="primary">SORT</button>
+              <button id="stop">STOP</button>
+            </div>
+          </div>
+
+          <div class="status-panel">
+            <div class="status-item">
+              <span class="label glitch-text" data-text="STATUS:">STATUS:</span>
+              <span id="status" class="value">READY</span>
+            </div>
+            <div class="status-item">
+              <span class="label glitch-text" data-text="COMPARISONS:"
+                >COMPARISONS:</span
+              >
+              <span id="comparisons" class="value">0</span>
+            </div>
+            <div class="status-item">
+              <span class="label glitch-text" data-text="SWAPS:">SWAPS:</span>
+              <span id="swaps" class="value">0</span>
+            </div>
+            <div class="status-item">
+              <span class="label glitch-text" data-text="TIME:">TIME:</span>
+              <span id="time" class="value">0.00s</span>
+            </div>
+          </div>
+
+          <div class="advanced-options">
+            <div class="section-title glitch-text" data-text="ADVANCED OPTIONS">
+              ADVANCED OPTIONS
+            </div>
+            <div class="control-group">
+              <label
+                for="color-theme"
+                class="glitch-text"
+                data-text="COLOR THEME:"
+                >COLOR THEME:</label
+              >
+              <select id="color-theme">
+                <option value="nerv">NERV DEFAULT</option>
+                <option value="seele">SEELE MONOLITH</option>
+                <option value="eva01">EVA-01</option>
+                <option value="eva02">EVA-02</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label
+                for="sound-toggle"
+                class="glitch-text"
+                data-text="SOUND EFFECTS:"
+                >SOUND EFFECTS:</label
+              >
+              <div class="toggle-switch">
+                <input type="checkbox" id="sound-toggle" />
+                <label for="sound-toggle" class="toggle-label"></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visualization Section -->
+        <div class="visualization-section">
+          <div class="section-title glitch-text" data-text="PATTERN ANALYSIS">
+            PATTERN ANALYSIS
+          </div>
+
+          <div class="visualization-metrics">
+            <div class="metric-item">
+              <span class="metric-label glitch-text" data-text="ARRAY ACCESS:"
+                >ARRAY ACCESS:</span
+              >
+              <span id="array-access" class="metric-value">0</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label glitch-text" data-text="EFFICIENCY:"
+                >EFFICIENCY:</span
+              >
+              <span id="efficiency" class="metric-value">N/A</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label glitch-text" data-text="COMPLEXITY:"
+                >COMPLEXITY:</span
+              >
+              <span id="complexity" class="metric-value">O(n²)</span>
+            </div>
+          </div>
+
+          <div class="array-container" id="array-container"></div>
+
+          <div class="algorithm-info">
+            <div class="info-header glitch-text" data-text="ALGORITHM DETAILS">
+              ALGORITHM DETAILS
+            </div>
+            <div id="algorithm-description" class="info-content">
+              Select an algorithm to view details.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="terminal-prompt">
+          <span class="nerv-prompt">NERV></span>
+          <span
+            class="command glitch-text"
+            data-text="EXECUTE SORTING ALGORITHM"
+            >EXECUTE SORTING ALGORITHM</span
+          >
+          <span class="cursor"></span>
+        </div>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
