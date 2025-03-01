@@ -142,7 +142,19 @@ function startSorting() {
 // Stop the sorting process
 function stopSortingProcess() {
     stopSorting = true;
+    sortingInProgress = false;
+    sortBtn.disabled = false;
+    generateBtn.disabled = false;
+    sizeSlider.disabled = false;
     statusElement.textContent = 'Stopped';
+    
+    // Reset the array bars to remove any coloring
+    arrayBars.forEach(bar => {
+        bar.className = 'array-bar';
+    });
+    
+    // Stop the timer
+    stopTimer();
 }
 
 // Reset statistics
